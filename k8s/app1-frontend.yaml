@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1-frontend
+  template:
+    metadata:
+      labels:
+        app: app1-frontend
+    spec:
+      containers:
+        - name: app1-frontend
+          image: app1-frontend:dev
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BACKEND_URL
+              value: "http://app2-backend:5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1-frontend
+spec:
+  type: ClusterIP
+  selector:
+    app: app1-frontend
+  ports:
+    - port: 8080
+      targetPort: 8080
