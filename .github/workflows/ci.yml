@@ -15,7 +15,7 @@ jobs:
       - name: Test APP2 (backend)
         run: |
           cd app2-backend
-          ./test_api.sh
+          bash test_api.sh
 
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/main'
