@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 set -e
 
-python -m venv .venv
-source .venv/bin/activate
-pip install -q flask
+# Installer Flask dans l'environnement du runner
+python3 -m pip install --upgrade pip
+python3 -m pip install flask
 
-python app.py &
+# Lancer l'app backend
+python3 app.py &
 PID=$!
-sleep 2
 
+# Attendre que le serveur démarre
+sleep 3
+
+# Test de l'API
 curl -s "http://127.0.0.1:5000/api/data?user=test" | grep -q "Bonjour test"
 
+# Nettoyage
 kill $PID
