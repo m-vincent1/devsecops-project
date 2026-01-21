@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: app2-backend
-          image: app2-backend:dev
-          imagePullPolicy: Never
+          image: mvincent1/app2-backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           env:

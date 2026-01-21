@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: app1-frontend
-          image: app1-frontend:dev
-          imagePullPolicy: Never
+          image: mvincent1/app1-frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
