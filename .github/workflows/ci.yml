@@ -24,6 +24,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Secret scanning (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+
       - name: Build & Push APP2
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v6
@@ -32,6 +35,17 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/app2-backend:latest
 
+      - name: Scan APP2 image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/app2-backend:latest
+          format: table
+          exit-code: 1
+          severity: CRITICAL,HIGH
+
+
+
+
       - name: Build & Push APP1
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v6
@@ -39,3 +53,13 @@ jobs:
           context: ./app1-frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/app1-frontend:latest
+
+
+
+      - name: Scan APP1 image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/app1-frontend:latest
+          format: table
+          exit-code: 1
+          severity: CRITICAL,HIGH
